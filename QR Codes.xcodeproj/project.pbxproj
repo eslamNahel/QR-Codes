@@ -10,9 +10,9 @@
 		ED2FA4DE27C112C700F89CF2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2FA4DD27C112C700F89CF2 /* AppDelegate.swift */; };
 		ED2FA4E027C112C700F89CF2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2FA4DF27C112C700F89CF2 /* SceneDelegate.swift */; };
 		ED2FA4E227C112C700F89CF2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2FA4E127C112C700F89CF2 /* ViewController.swift */; };
-		ED2FA4E527C112C700F89CF2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED2FA4E327C112C700F89CF2 /* Main.storyboard */; };
 		ED2FA4E727C112CB00F89CF2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED2FA4E627C112CB00F89CF2 /* Assets.xcassets */; };
 		ED2FA4EA27C112CB00F89CF2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED2FA4E827C112CB00F89CF2 /* LaunchScreen.storyboard */; };
+		ED2FA4F227C113EB00F89CF2 /* GenerateCodeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED2FA4F127C113EB00F89CF2 /* GenerateCodeVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,10 +20,10 @@
 		ED2FA4DD27C112C700F89CF2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ED2FA4DF27C112C700F89CF2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		ED2FA4E127C112C700F89CF2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		ED2FA4E427C112C700F89CF2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		ED2FA4E627C112CB00F89CF2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ED2FA4E927C112CB00F89CF2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED2FA4EB27C112CB00F89CF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ED2FA4F127C113EB00F89CF2 /* GenerateCodeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateCodeVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,10 +59,10 @@
 				ED2FA4DD27C112C700F89CF2 /* AppDelegate.swift */,
 				ED2FA4DF27C112C700F89CF2 /* SceneDelegate.swift */,
 				ED2FA4E127C112C700F89CF2 /* ViewController.swift */,
-				ED2FA4E327C112C700F89CF2 /* Main.storyboard */,
 				ED2FA4E627C112CB00F89CF2 /* Assets.xcassets */,
 				ED2FA4E827C112CB00F89CF2 /* LaunchScreen.storyboard */,
 				ED2FA4EB27C112CB00F89CF2 /* Info.plist */,
+				ED2FA4F127C113EB00F89CF2 /* GenerateCodeVC.swift */,
 			);
 			path = "QR Codes";
 			sourceTree = "<group>";
@@ -127,7 +127,6 @@
 			files = (
 				ED2FA4EA27C112CB00F89CF2 /* LaunchScreen.storyboard in Resources */,
 				ED2FA4E727C112CB00F89CF2 /* Assets.xcassets in Resources */,
-				ED2FA4E527C112C700F89CF2 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +139,7 @@
 			files = (
 				ED2FA4E227C112C700F89CF2 /* ViewController.swift in Sources */,
 				ED2FA4DE27C112C700F89CF2 /* AppDelegate.swift in Sources */,
+				ED2FA4F227C113EB00F89CF2 /* GenerateCodeVC.swift in Sources */,
 				ED2FA4E027C112C700F89CF2 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -147,14 +147,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		ED2FA4E327C112C700F89CF2 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				ED2FA4E427C112C700F89CF2 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		ED2FA4E827C112CB00F89CF2 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -294,9 +286,9 @@
 				INFOPLIST_FILE = "QR Codes/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -306,7 +298,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -322,9 +314,9 @@
 				INFOPLIST_FILE = "QR Codes/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -334,7 +326,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
