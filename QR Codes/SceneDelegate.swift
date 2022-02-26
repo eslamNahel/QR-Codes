@@ -14,9 +14,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(frame: scene.coordinateSpace.bounds)
-        window?.windowScene = scene
-        window?.rootViewController = GenerateCodeVC()
+        window                              = UIWindow(frame: scene.coordinateSpace.bounds)
+        window?.overrideUserInterfaceStyle  = .light
+        window?.windowScene                 = scene
+        window?.rootViewController          = GenerateCodeVC()
         window?.makeKeyAndVisible()
     }
 
