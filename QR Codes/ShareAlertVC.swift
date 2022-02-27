@@ -16,13 +16,14 @@ class ShareAlertVC: UIViewController {
     let generatedQRImage    = UIImageView()
     let qrCodeURL           = AppLabel(fontSize: 17, weightFont: .semibold)
     let shareButton         = AppButton(buttonStyle: .tinted(), buttonImage: UIImage(systemName: "square.and.arrow.up")!, buttonTitle: "Share")
+    
     var image: UIImage!
+    private var urlString: String!
     
     
     init(url: String, qrImage: UIImage) {
         super.init(nibName: nil, bundle: nil)
-        qrCodeURL.text = url
-        //        generatedQRImage.image = qrImage
+        self.urlString = url
         self.image = qrImage
     }
     
@@ -44,8 +45,35 @@ class ShareAlertVC: UIViewController {
     }
     
     
+    private func shareQR() {
+        let renderer = UIGraphicsImageRenderer(size: self.cornerRadiusView.bounds.size)
+        let imageRen = renderer.image { ctx in
+            self.cornerRadiusView.drawHierarchy(in: self.cornerRadiusView.bounds, afterScreenUpdates: true)
+        }
+//            if let jpgImage = imageRen.jpegData(compressionQuality: 0.8) {
+//                let vc = UIActivityViewController(activityItems: [jpgImage], applicationActivities: nil)
+//                vc.popoverPresentationController?.sourceView = self.view
+//                self.present(vc, animated: true)
+//            }
+        if let jpgImage = self.image.jpegData(compressionQuality: 0.8) {
+            let vc = UIActivityViewController(activityItems: [jpgImage], applicationActivities: nil)
+            vc.popoverPresentationController?.sourceView = self.view
+            vc.completionWithItemsHandler = { (activityType, completed: Bool, returnedItems:[Any]?, error: Error?) in
+                if completed {
+                   
+                }
+             }
+            self.present(vc, animated: true)
+        }
+    }
+    
+    
     private func addShareButton() {
         cornerRadiusView.addSubview(shareButton)
+        shareButton.addAction(UIAction { [weak self] _ in
+            guard let self = self else { return }
+            self.shareQR()
+        }, for: .touchUpInside)
         
         NSLayoutConstraint.activate([
             shareButton.centerXAnchor.constraint(equalTo: cornerRadiusView.centerXAnchor),
@@ -58,6 +86,7 @@ class ShareAlertVC: UIViewController {
     
     private func addQRLabel() {
         cornerRadiusView.addSubview(qrCodeURL)
+        qrCodeURL.text = self.urlString
         
         NSLayoutConstraint.activate([
             qrCodeURL.centerXAnchor.constraint(equalTo: cornerRadiusView.centerXAnchor),

@@ -71,8 +71,8 @@ class GenerateCodeVC: UIViewController {
         guard let qrFilter  = CIFilter(name: "CIQRCodeGenerator") else { return }
         qrFilter.setValue(data, forKey: "inputMessage")
         
-        let qrTransform = CGAffineTransform(scaleX: 12, y: 12)
-        if let qrImage = qrFilter.outputImage?.transformed(by: qrTransform) {
+        let qrTransform = CGAffineTransform(scaleX: 100, y: 100)
+        if let qrImage = qrFilter.outputImage?.samplingNearest().transformed(by: qrTransform) {
             guard let tintedQRImage = qrImage.tinted(using: AppColors.TealColor) else { return }
             generatedImage = UIImage(ciImage: tintedQRImage)
             let shareVC = ShareAlertVC(url: urlText, qrImage: UIImage(ciImage: tintedQRImage))
