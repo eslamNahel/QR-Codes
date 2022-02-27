@@ -9,8 +9,4 @@ I might dive into [CIFilter](https://developer.apple.com/library/archive/documen
 
 ## Screenshots
 
-![App Screenshot](https://user-images.githubusercontent.com/54270105/155898561-bd5f62f7-40eb-46a9-999c-21f9ae3b2ea0.png)
-
-![App Screenshot](https://user-images.githubusercontent.com/54270105/155898606-142d2557-7672-407a-8ef3-60a9d6858ad5.png)
-
-![App Screenshot](https://user-images.githubusercontent.com/54270105/155898654-60267250-3ad2-4e9f-9439-f54c1a5550c5.png)
+![App Screenshot](https://user-images.githubusercontent.com/54270105/155898870-9069b7ca-a95e-4a7f-8b3a-fdcd5a944fd3.png)
