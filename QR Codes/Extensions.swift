@@ -7,8 +7,57 @@
 
 import UIKit
 
+fileprivate var containerView: UIView!
+
+//MARK: - UIViewController Extension
+extension UIViewController {
+    
+    func presentAlertOnMainThread(title: String, message: String, actionTitle: String) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    
+    func showLoadingView() {
+        containerView = UIView(frame: view.bounds)
+        view.addSubview(containerView)
+        
+        containerView.backgroundColor   = .systemBackground
+        containerView.alpha             = 0
+        
+        UIView.animate(withDuration: 0.25) {
+            containerView.alpha = 0.8
+        }
+        
+        let activityIndicator = UIActivityIndicatorView(style: .large)
+        containerView.addSubview(activityIndicator)
+        
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
+        ])
+        
+        activityIndicator.startAnimating()
+    }
+    
+    
+    func hideLoadingView() {
+        DispatchQueue.main.async {
+            containerView.removeFromSuperview()
+            containerView = nil
+        }
+    }
+}
+
+
 //MARK: - String Extension
 extension String {
+    
     var isValidURL: Bool {
         let detector = try! NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
         if let match = detector.firstMatch(in: self, options: [], range: NSRange(location: 0, length: self.utf16.count)) {
@@ -27,8 +76,11 @@ extension NSString {
         let textAsString = self as String.SubSequence
         
         for chara in textAsString {
-            if (!(chara >= "a" && chara <= "z") && !(chara >= "A" && chara <= "Z") && !(chara >= "0" && chara <= "9")  && !(chara == "-" || chara == "." || chara == "/" || chara == ":")) {
-               return false
+            if (!(chara >= "a" && chara <= "z")
+                && !(chara >= "A" && chara <= "Z")
+                && !(chara >= "0" && chara <= "9")
+                && !(chara == "-" || chara == "." || chara == "/" || chara == ":")) {
+                return false
             }
         }
         return true
@@ -43,7 +95,7 @@ extension CIImage {
         return inverted?.blackTransparent
     }
     
-    /// Inverts the colors.
+    
     var inverted: CIImage? {
         guard let invertedColorFilter = CIFilter(name: "CIColorInvert") else { return nil }
         
@@ -51,7 +103,7 @@ extension CIImage {
         return invertedColorFilter.outputImage
     }
     
-    /// Converts all black to transparent.
+    
     var blackTransparent: CIImage? {
         guard let blackTransparentFilter = CIFilter(name: "CIMaskToAlpha") else { return nil }
         blackTransparentFilter.setValue(self, forKey: "inputImage")
@@ -59,12 +111,10 @@ extension CIImage {
     }
     
     
-    func tinted(using color: UIColor) -> CIImage?
-    {
-        guard
-            let transparentQRImage = transparent,
-            let filter = CIFilter(name: "CIMultiplyCompositing"),
-            let colorFilter = CIFilter(name: "CIConstantColorGenerator") else { return nil }
+    func tinted(using color: UIColor) -> CIImage? {
+        guard let transparentQRImage = transparent,
+              let filter = CIFilter(name: "CIMultiplyCompositing"),
+              let colorFilter = CIFilter(name: "CIConstantColorGenerator") else { return nil }
         
         let ciColor = CIColor(color: color)
         colorFilter.setValue(ciColor, forKey: kCIInputColorKey)

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import CoreImage
 
 class GenerateCodeVC: UIViewController {
     
@@ -17,8 +16,8 @@ class GenerateCodeVC: UIViewController {
     let generateButton          = AppButton(buttonStyle: .filled(), buttonImage: AppImages.qrCode!, buttonTitle: "Generate QR")
     
     private var buttonConstraint: NSLayoutConstraint!
-    private var generatedString: String?
-    private var generatedImage: UIImage?
+    private var generatedString: String!
+    private var generatedImage: UIImage!
     
     
     //MARK: - VC Lifecycles
@@ -45,41 +44,49 @@ class GenerateCodeVC: UIViewController {
     //MARK: - VC Methods
     private func generateQRCode() {
         guard var urlText = appTextField.textField.text, urlText != generatedString else {
-            let shareVC = ShareAlertVC(url: generatedString!, qrImage: generatedImage!)
-            shareVC.modalTransitionStyle = .crossDissolve
-            shareVC.modalPresentationStyle = .overFullScreen
+            let shareVC = ShareAlertVC(url: generatedString, qrImage: generatedImage)
+            
+            shareVC.modalTransitionStyle    = .crossDissolve
+            shareVC.modalPresentationStyle  = .overFullScreen
             present(shareVC, animated: true)
             return
         }
         
-        generatedString = urlText
+        self.generatedString = urlText
         
         if !urlText.contains("http") && !urlText.contains("www.") {
             urlText = "www." + urlText
         }
         
         guard urlText.isValidURL else {
-            let alert = UIAlertController(title: "Invalid URL",
-                                          message: "The URL you entered is not valid. Please check it again",
-                                          preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
+            self.presentAlertOnMainThread(title: "Invalid URL", message: "The URL you entered is not valid. Please check it again", actionTitle: "OK")
             return
         }
         
-        let data            = urlText.data(using: String.Encoding.ascii)
-        guard let qrFilter  = CIFilter(name: "CIQRCodeGenerator") else { return }
-        qrFilter.setValue(data, forKey: "inputMessage")
-        
-        let qrTransform = CGAffineTransform(scaleX: 100, y: 100)
-        if let qrImage = qrFilter.outputImage?.samplingNearest().transformed(by: qrTransform) {
-            guard let tintedQRImage = qrImage.tinted(using: AppColors.TealColor) else { return }
-            generatedImage = UIImage(ciImage: tintedQRImage)
-            let shareVC = ShareAlertVC(url: urlText, qrImage: UIImage(ciImage: tintedQRImage))
+        if let qrImage = getQRCodeImage(string: urlText) {
+            generatedImage = qrImage
+            
+            let shareVC = ShareAlertVC(url: urlText, qrImage: qrImage)
             shareVC.modalTransitionStyle = .crossDissolve
             shareVC.modalPresentationStyle = .overFullScreen
             present(shareVC, animated: true)
+        } else {
+            self.presentAlertOnMainThread(title: "Something Wrong Happened", message: "Something wrong happened when generating the QR Code. Please try again.", actionTitle: "OK")
         }
+    }
+    
+    
+    private func getQRCodeImage(string: String) -> UIImage? {
+        let data            = string.data(using: String.Encoding.ascii)
+        guard let qrFilter  = CIFilter(name: "CIQRCodeGenerator") else { return nil }
+        qrFilter.setValue(data, forKey: "inputMessage")
+        
+        let qrTransform = CGAffineTransform(scaleX: 256, y: 256)
+        if let qrImage = qrFilter.outputImage?.samplingNearest().transformed(by: qrTransform) {
+            guard let tintedQRImage = qrImage.tinted(using: AppColors.TealColor) else { return nil }
+            return UIImage(ciImage: tintedQRImage)
+        }
+        return nil
     }
     
     
@@ -130,7 +137,7 @@ class GenerateCodeVC: UIViewController {
         view.addSubview(QRCodePlaceholderImage)
         QRCodePlaceholderImage.image = AppImages.qrCode?.withTintColor(AppColors.TealColor, renderingMode: .alwaysOriginal).applyingSymbolConfiguration(.init(weight: .bold))
         
-        QRCodePlaceholderImage.contentMode                  = .scaleAspectFill
+        QRCodePlaceholderImage.contentMode = .scaleAspectFill
         
         QRCodePlaceholderImage.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

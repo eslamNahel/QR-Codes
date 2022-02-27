@@ -9,6 +9,7 @@ import UIKit
 
 class ShareAlertVC: UIViewController {
     
+    //MARK: - Components & Properties
     let cornerRadiusView    = UIView()
     let contentView         = UIView()
     let viewTitle           = AppLabel(fontSize: 22, weightFont: .bold)
@@ -21,10 +22,11 @@ class ShareAlertVC: UIViewController {
     private var urlString: String!
     
     
+    //MARK: - Init Methods
     init(url: String, qrImage: UIImage) {
         super.init(nibName: nil, bundle: nil)
-        self.urlString = url
-        self.image = qrImage
+        self.urlString  = url
+        self.image      = qrImage
     }
     
     
@@ -33,6 +35,7 @@ class ShareAlertVC: UIViewController {
     }
     
     
+    //MARK: - VC Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(red: 0.902, green: 0.918, blue: 0.933, alpha: 0.8)
@@ -45,29 +48,36 @@ class ShareAlertVC: UIViewController {
     }
     
     
+    //MARK: - VC Methods
     private func shareQR() {
-        let renderer = UIGraphicsImageRenderer(size: self.cornerRadiusView.bounds.size)
-        let imageRen = renderer.image { ctx in
-            self.cornerRadiusView.drawHierarchy(in: self.cornerRadiusView.bounds, afterScreenUpdates: true)
-        }
-//            if let jpgImage = imageRen.jpegData(compressionQuality: 0.8) {
-//                let vc = UIActivityViewController(activityItems: [jpgImage], applicationActivities: nil)
-//                vc.popoverPresentationController?.sourceView = self.view
-//                self.present(vc, animated: true)
-//            }
-        if let jpgImage = self.image.jpegData(compressionQuality: 0.8) {
-            let vc = UIActivityViewController(activityItems: [jpgImage], applicationActivities: nil)
-            vc.popoverPresentationController?.sourceView = self.view
-            vc.completionWithItemsHandler = { (activityType, completed: Bool, returnedItems:[Any]?, error: Error?) in
-                if completed {
-                   
+        self.showLoadingView()
+        DispatchQueue.global(qos: .userInitiated).async {
+            if let jpgImage = self.image.jpegData(compressionQuality: 0.8) {
+                self.hideLoadingView()
+                DispatchQueue.main.async {
+                    let vc = UIActivityViewController(activityItems: [jpgImage], applicationActivities: nil)
+                    vc.completionWithItemsHandler = { [weak self] (activityType, completed: Bool, _, _) in
+                        guard let self = self, completed, activityType == .saveToCameraRoll else { return }
+                        self.presentAlertOnMainThread(title: "QR Code Saved", message: "Your Unique QR Code Images Was Successfully Saved ✅", actionTitle: "Great!")
+                    }
+                    self.present(vc, animated: true)
                 }
-             }
-            self.present(vc, animated: true)
+            }
+        }
+        
+    }
+    
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch: UITouch? = touches.first
+        
+        if touch?.view != cornerRadiusView {
+            self.dismiss(animated: true)
         }
     }
     
     
+    //MARK: - VC UI Setup Methods
     private func addShareButton() {
         cornerRadiusView.addSubview(shareButton)
         shareButton.addAction(UIAction { [weak self] _ in
@@ -97,20 +107,11 @@ class ShareAlertVC: UIViewController {
     }
     
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch: UITouch? = touches.first
-        
-        if touch?.view != cornerRadiusView {
-            self.dismiss(animated: true)
-        }
-    }
-    
-    
     private func addQRCodeImage() {
         cornerRadiusView.addSubview(generatedQRImage)
         
-        generatedQRImage.contentMode = .scaleAspectFill
-        generatedQRImage.image = self.image
+        generatedQRImage.contentMode    = .scaleAspectFill
+        generatedQRImage.image          = self.image
         
         generatedQRImage.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -137,9 +138,9 @@ class ShareAlertVC: UIViewController {
     
     private func addDismissButton() {
         cornerRadiusView.addSubview(dismissButton)
-        dismissButton.configuration?.cornerStyle = .capsule
-        let boldLargeConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .medium)
-        dismissButton.configuration?.image = UIImage(systemName: "x.circle")!.applyingSymbolConfiguration(boldLargeConfig)
+        dismissButton.configuration?.cornerStyle    = .capsule
+        let boldLargeConfig                         = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold, scale: .medium)
+        dismissButton.configuration?.image          = UIImage(systemName: "x.circle")!.applyingSymbolConfiguration(boldLargeConfig)
         
         dismissButton.addAction(UIAction{ _ in
             self.dismiss(animated: true)
@@ -154,15 +155,15 @@ class ShareAlertVC: UIViewController {
     }
     
     private func addContentView() {
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.backgroundColor = .clear
-        contentView.layer.backgroundColor = UIColor.clear.cgColor
-        contentView.layer.shadowColor = UIColor(red: 0.145, green: 0.165, blue: 0.192, alpha: 0.2).cgColor
-        contentView.layer.shadowOpacity = 1
-        contentView.layer.shadowRadius = 29
-        contentView.layer.shadowOffset = CGSize(width: 0, height: 1.0)
+        contentView.backgroundColor         = .clear
+        contentView.layer.backgroundColor   = UIColor.clear.cgColor
+        contentView.layer.shadowColor       = UIColor(red: 0.145, green: 0.165, blue: 0.192, alpha: 0.2).cgColor
+        contentView.layer.shadowOpacity     = 1
+        contentView.layer.shadowRadius      = 29
+        contentView.layer.shadowOffset      = CGSize(width: 0, height: 1.0)
         view.addSubview(contentView)
         
+        contentView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             contentView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -175,14 +176,14 @@ class ShareAlertVC: UIViewController {
     
     
     private func addCornerRadiusView() {
-        cornerRadiusView.translatesAutoresizingMaskIntoConstraints = false
-        cornerRadiusView.layer.cornerRadius = 27
-        cornerRadiusView.layer.cornerCurve = .continuous
-        cornerRadiusView.layer.masksToBounds = true
-        cornerRadiusView.backgroundColor = .white
+        cornerRadiusView.layer.cornerRadius     = 27
+        cornerRadiusView.layer.cornerCurve      = .continuous
+        cornerRadiusView.layer.masksToBounds    = true
+        cornerRadiusView.backgroundColor        = .white
         
         contentView.addSubview(cornerRadiusView)
         
+        cornerRadiusView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             cornerRadiusView.topAnchor.constraint(equalTo: contentView.topAnchor),
             cornerRadiusView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
