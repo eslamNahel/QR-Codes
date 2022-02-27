@@ -1,13 +1,42 @@
 //
-//  CIImage+Ext.swift
+//  Extensions.swift
 //  QR Codes
 //
 //  Created by Eslam Nahel on 27/02/2022.
 //
 
 import UIKit
-import CoreImage
 
+//MARK: - String Extension
+extension String {
+    var isValidURL: Bool {
+        let detector = try! NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
+        if let match = detector.firstMatch(in: self, options: [], range: NSRange(location: 0, length: self.utf16.count)) {
+            return match.range.length == self.utf16.count
+        } else {
+            return false
+        }
+    }
+}
+
+
+//MARK: - NSString Extension
+extension NSString {
+    
+    var isOnlyEnglish: Bool {
+        let textAsString = self as String.SubSequence
+        
+        for chara in textAsString {
+            if (!(chara >= "a" && chara <= "z") && !(chara >= "A" && chara <= "Z") && !(chara >= "0" && chara <= "9")  && !(chara == "-" || chara == "." || chara == "/" || chara == ":")) {
+               return false
+            }
+        }
+        return true
+    }
+}
+
+
+//MARK: - CIImage Extension 
 extension CIImage {
     
     var transparent: CIImage? {
@@ -47,3 +76,4 @@ extension CIImage {
         return filter.outputImage!
     }
 }
+

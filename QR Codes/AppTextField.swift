@@ -43,8 +43,9 @@ class AppTextField: UIView {
         textField.spellCheckingType           = .no
         textField.placeholder                 = "website.example"
         textField.returnKeyType               = .done
-        textField.keyboardType                = .asciiCapable
+        textField.keyboardType                = .URL
         textField.clearButtonMode             = .always
+        textField.autocapitalizationType      = .none
         
         textField.translatesAutoresizingMaskIntoConstraints = false
         pinTextFieldToView()

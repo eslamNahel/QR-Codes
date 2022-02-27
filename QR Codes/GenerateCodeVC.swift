@@ -17,6 +17,9 @@ class GenerateCodeVC: UIViewController {
     let generateButton          = AppButton(buttonStyle: .filled(), buttonImage: AppImages.qrCode!, buttonTitle: "Generate QR")
     
     private var buttonConstraint: NSLayoutConstraint!
+    private var generatedString: String?
+    private var generatedImage: UIImage?
+    
     
     //MARK: - VC Lifecycles
     override func viewDidLoad() {
@@ -41,16 +44,41 @@ class GenerateCodeVC: UIViewController {
     
     //MARK: - VC Methods
     private func generateQRCode() {
-        guard let text = appTextField.textField.text else { return } // show error here
-        let data = text.data(using: String.Encoding.ascii)
+        guard var urlText = appTextField.textField.text, urlText != generatedString else {
+            let shareVC = ShareAlertVC(url: generatedString!, qrImage: generatedImage!)
+            shareVC.modalTransitionStyle = .crossDissolve
+            shareVC.modalPresentationStyle = .overFullScreen
+            present(shareVC, animated: true)
+            return
+        }
         
-        guard let qrFilter = CIFilter(name: "CIQRCodeGenerator") else { return }
+        generatedString = urlText
+        
+        if !urlText.contains("http") && !urlText.contains("www.") {
+            urlText = "www." + urlText
+        }
+        
+        guard urlText.isValidURL else {
+            let alert = UIAlertController(title: "Invalid URL",
+                                          message: "The URL you entered is not valid. Please check it again",
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        
+        let data            = urlText.data(using: String.Encoding.ascii)
+        guard let qrFilter  = CIFilter(name: "CIQRCodeGenerator") else { return }
         qrFilter.setValue(data, forKey: "inputMessage")
         
         let qrTransform = CGAffineTransform(scaleX: 12, y: 12)
         if let qrImage = qrFilter.outputImage?.transformed(by: qrTransform) {
             guard let tintedQRImage = qrImage.tinted(using: AppColors.TealColor) else { return }
-            self.QRCodePlaceholderImage.image = UIImage(ciImage: tintedQRImage)
+            generatedImage = UIImage(ciImage: tintedQRImage)
+            let shareVC = ShareAlertVC(url: urlText, qrImage: UIImage(ciImage: tintedQRImage))
+            shareVC.modalTransitionStyle = .crossDissolve
+            shareVC.modalPresentationStyle = .overFullScreen
+            present(shareVC, animated: true)
         }
     }
     
@@ -103,7 +131,6 @@ class GenerateCodeVC: UIViewController {
         QRCodePlaceholderImage.image = AppImages.qrCode?.withTintColor(AppColors.TealColor, renderingMode: .alwaysOriginal).applyingSymbolConfiguration(.init(weight: .bold))
         
         QRCodePlaceholderImage.contentMode                  = .scaleAspectFill
-        QRCodePlaceholderImage.overrideUserInterfaceStyle   = .dark
         
         QRCodePlaceholderImage.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -155,7 +182,7 @@ extension GenerateCodeVC: UITextFieldDelegate {
         let currentString: NSString = (text) as NSString
         let newString: NSString     = currentString.replacingCharacters(in: range, with: string) as NSString
         
-        if newString.length == 0 || newString.contains(" "){
+        if newString.length == 0 || newString.contains(" ") || !newString.isOnlyEnglish {
             generateButton.configuration?.baseBackgroundColor   = AppColors.TealColor.withAlphaComponent(0.4)
             generateButton.isUserInteractionEnabled             = false
         } else {

@@ -16,7 +16,8 @@
 		ED34403D27CA4F8F00122501 /* AppTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED34403C27CA4F8F00122501 /* AppTextField.swift */; };
 		ED34403F27CA500A00122501 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED34403E27CA500A00122501 /* Constants.swift */; };
 		ED34404127CACB9900122501 /* AppButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED34404027CACB9900122501 /* AppButton.swift */; };
-		ED34404327CAE97800122501 /* CIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED34404227CAE97800122501 /* CIImage+Ext.swift */; };
+		ED34404527CBB2D800122501 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED34404427CBB2D800122501 /* Extensions.swift */; };
+		ED34404727CBB75700122501 /* ShareAlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED34404627CBB75700122501 /* ShareAlertVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,7 +32,8 @@
 		ED34403C27CA4F8F00122501 /* AppTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTextField.swift; sourceTree = "<group>"; };
 		ED34403E27CA500A00122501 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		ED34404027CACB9900122501 /* AppButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppButton.swift; sourceTree = "<group>"; };
-		ED34404227CAE97800122501 /* CIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CIImage+Ext.swift"; sourceTree = "<group>"; };
+		ED34404427CBB2D800122501 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		ED34404627CBB75700122501 /* ShareAlertVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAlertVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,7 +76,8 @@
 				ED34403C27CA4F8F00122501 /* AppTextField.swift */,
 				ED34403E27CA500A00122501 /* Constants.swift */,
 				ED34404027CACB9900122501 /* AppButton.swift */,
-				ED34404227CAE97800122501 /* CIImage+Ext.swift */,
+				ED34404427CBB2D800122501 /* Extensions.swift */,
+				ED34404627CBB75700122501 /* ShareAlertVC.swift */,
 			);
 			path = "QR Codes";
 			sourceTree = "<group>";
@@ -150,13 +153,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				ED34403B27CA482000122501 /* AppLabel.swift in Sources */,
+				ED34404527CBB2D800122501 /* Extensions.swift in Sources */,
 				ED2FA4DE27C112C700F89CF2 /* AppDelegate.swift in Sources */,
 				ED2FA4F227C113EB00F89CF2 /* GenerateCodeVC.swift in Sources */,
 				ED2FA4E027C112C700F89CF2 /* SceneDelegate.swift in Sources */,
 				ED34403D27CA4F8F00122501 /* AppTextField.swift in Sources */,
 				ED34404127CACB9900122501 /* AppButton.swift in Sources */,
+				ED34404727CBB75700122501 /* ShareAlertVC.swift in Sources */,
 				ED34403F27CA500A00122501 /* Constants.swift in Sources */,
-				ED34404327CAE97800122501 /* CIImage+Ext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

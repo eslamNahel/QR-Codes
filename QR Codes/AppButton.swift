@@ -21,7 +21,8 @@ class AppButton: UIButton {
         super.init(frame: .zero)
         self.buttonTitle        = buttonTitle
         configuration           = buttonStyle
-        configuration?.image    = buttonImage.applyingSymbolConfiguration(.init(weight: .bold))
+        let boldLargeConfig     = UIImage.SymbolConfiguration(pointSize: 20, weight: .medium, scale: .medium)
+        configuration?.image    = buttonImage.applyingSymbolConfiguration(boldLargeConfig)
         configuration?.baseForegroundColor = buttonStyle == .tinted() ? AppColors.TealColor : .white
         
         configure()
@@ -34,10 +35,10 @@ class AppButton: UIButton {
     
     private func configure() {
         configuration?.baseBackgroundColor  = AppColors.TealColor
-        configuration?.imagePadding         = 6
+        configuration?.imagePadding         = 10
         
         var container                       = AttributeContainer()
-        container.font                      = UIFont.boldSystemFont(ofSize: 20)
+        container.font                      = .systemFont(ofSize: 20, weight: .medium)
         configuration?.attributedTitle      = AttributedString(buttonTitle, attributes:  container)
         
         configuration?.cornerStyle          = .large
